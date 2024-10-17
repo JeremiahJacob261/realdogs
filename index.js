@@ -433,15 +433,24 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
                     console.log(surewithdraw)
                     if (surewithdraw[chatId]) {
 
-                        if (!messageText.includes('REFER DAWGS') || !messageText.includes('DOGS BALANCE') || !messageText.includes('WITHDRAW') || !messageText.includes('TASKS')) {
-                            notifyadmin(chatId, messageText);
+                        if (messageText.includes('REFER DAWGS') || messageText.includes('DOGS BALANCE') || messageText.includes('WITHDRAW') || messageText.includes('TASKS')) {
+                            surewithdraw[chatId] = false;
+                        }else{
+                            console.log("commands")
+                            if(messageText.length < 10){
+                                bot.sendMessage(chatId, `Invalid Ton Address\n\n <a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
+                                surewithdraw[chatId] = false;
+                            }else{
+                                  notifyadmin(chatId, messageText);
+                            console.log(!messageText.includes('REFER DAWGS'))
                             surewithdraw[chatId] = false;
                             bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
+                       
+                            }
+                          
                         }
 
-                    } else {
-                        bot.sendMessage(chatId, `Invalid Ton Address\n\n <a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
-                    }
+                    } 
 
 
 
