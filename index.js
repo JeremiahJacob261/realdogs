@@ -433,7 +433,7 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
                     console.log(surewithdraw)
                     if (surewithdraw[chatId]) {
 
-                        if (messageText != '👥REFER DAWGS👥' || messageText != '💰DOGS BALANCE💰' || messageText != '🧧WITHDRAW🧧' || messageText != '🤖TASKS🤖' || messageText != '/start') {
+                        if (!messageText.includes('REFER DAWGS') || !messageText.includes('DOGS BALANCE') || !messageText.includes('WITHDRAW') || !messageText.includes('TASKS')) {
                             notifyadmin(chatId, messageText);
                             surewithdraw[chatId] = false;
                             bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
