@@ -4,15 +4,17 @@
   "description": "this is a telegram bot for a giveaway token",
   "main": "index.js",
   "scripts": {
-    "start":"node index.js",
-    "dev":"nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "jerry",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
     "axios": "^1.7.7",
     "express": "^4.21.1",
+    "node-appwrite": "^11.1.1",
     "node-telegram-bot-api": "^0.66.0",
     "nodemon": "^3.1.7"
   }
