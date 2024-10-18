@@ -74,7 +74,19 @@ const starters = async () => {
                     })
                     .eq("uid",uid)
                     .select();
-                    vbot.sendMessage(chatId, `${data[0]?.name} withdrawal declined ❌.\n\n 💰 Balance has been refunded `, mainMenuOptions);
+
+                    const {data:udata,error:userError} = await supabase
+                    .from('users')
+                    .select('balance')
+                    .eq('chatid',chatid)
+
+                    const { error:dee} = await supabase
+                    .from('users')
+                    .update({
+                        "balance":udata[0]?.balance + data[0]?.amount
+                    })
+                    .eq("chatid",chatid)
+                    vbot.sendMessage(chatId, `${data[0]?.name ?? "..."} withdrawal declined ❌.\n\n ${data[0]?.amount ?? 0} DOGS💰 Balance has been refunded `, mainMenuOptions);
 
                 }catch(e){
                     console.log(e);
@@ -95,7 +107,7 @@ const starters = async () => {
                 .select('chatid')
                 .eq('upline',data[0]?.referid)  
 
-                vbot.sendMessage(chatId, `${data[0]?.username}\nChatID: ${chat_id}\n\n Balance: ${data[0]?.balance}\nTotal Referals: ${downs?.length ?? 0} `, mainMenuOptions);
+                vbot.sendMessage(chatId, `${data[0]?.username}\nChatID: ${chat_id}\n\n Balance: ${data[0]?.balance}\nTotal Referals: ${downs?.length ?? 0} DAWGS`, mainMenuOptions);
 
             } catch (error) {
                 console.log(error)
