@@ -23,7 +23,7 @@ const notifyadmin = async (user, address, chat_id, uidx) => {
     };
 
     vbot.sendMessage("6351462493", `${user} has placed a withdrawal\n\n The ton address is ${address}`, options)
-    vbot.sendMessage("1819258518", `${user} has placed a withdrawal\n\n The ton address is ${address}`, options);
+    // vbot.sendMessage("1819258518", `${user} has placed a withdrawal\n\n The ton address is ${address}`, options);
 }
 
 

@@ -459,7 +459,7 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
                                 console.log(!messageText.includes('REFER DAWGS'))
                                 surewithdraw[chatId] = false;
                                 console.log(body)
-                                bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
+                                bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions);
 
                                 const Depositing = async () => {
                                     try {
