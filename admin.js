@@ -18,7 +18,8 @@ const notifyadmin = async (user, address, chat_id, uidx) => {
                     { text: '❌ DECLINE', callback_data: `decline_withdrawal:${chat_id}:${uidx}` },
                     { text: '🔍 VIEW USER INFO', callback_data: `see_user:${chat_id}` }
                 ]
-            ]
+            ],
+           one_time_keyboard: false
         }, parse_mode: 'HTML'
     };
 
