@@ -93,6 +93,18 @@ function generateRandomNumberString(length = 11) {
     return "r" + result;
 }
 
+function uidderand(length = 11) {
+    const digits = '0123abdje456789';
+    let result = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * digits.length);
+        result += digits[randomIndex];
+    }
+
+    return "u" + result;
+}
+
 bot.onText(/\/start$/, (msg) => {
     const chatId = msg.chat.id;
     const username = msg.from.username;
@@ -431,34 +443,50 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
                 bot.on('text', (msg) => {
                     const chatId = msg.chat.id;
                     const messageText = msg.text;
+                    const uidx = uidderand();
                     console.log(surewithdraw)
                     if (surewithdraw[chatId]) {
 
                         if (messageText.includes('REFER DAWGS') || messageText.includes('DOGS BALANCE') || messageText.includes('WITHDRAW') || messageText.includes('TASKS')) {
                             surewithdraw[chatId] = false;
-                        }else{
+                        } else {
                             console.log("commands")
-                            if(messageText.length < 10){
+                            if (messageText.length < 10) {
                                 bot.sendMessage(chatId, `Invalid Ton Address\n\n <a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
                                 surewithdraw[chatId] = false;
-                            }else{
-                                  notifyadmin(user, messageText);
-                            console.log(!messageText.includes('REFER DAWGS'))
-                            surewithdraw[chatId] = false;
-                            console.log(body)
-                            const Depositing = async (damount, dusername) => {
-                                const { data, error } = await supabase
-                                    .rpc('withdraw', { name: dusername, amount: damount })
-                                console.log(error);
+                            } else {
+                                notifyadmin(user, messageText, chatId,uidx);
+                                console.log(!messageText.includes('REFER DAWGS'))
+                                surewithdraw[chatId] = false;
+                                console.log(body)
+                                bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
+
+                                const Depositing = async () => {
+                                    try {
+                                        const { error } = await supabase
+                                            .from('users')
+                                            .update({ balance: 0 })
+                                            .eq('chatid', chatId)
+                                        //send datat to the withdrawal tale
+                                            const { error:werror } = await supabase
+                                            .from('withdrawals')
+                                            .insert({ 
+                                                "name":user,
+                                                "chatid":chatId,
+                                                "amount":balance,
+                                                "address":messageText,
+                                                "uid":uidx
+                                             });
+                                    } catch (e) {
+                                        console.log(error)
+                                    }
+                                }
+                                Depositing()
                             }
-                            Depositing(balance,chatId);
-                            bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
-                       
-                            }
-                          
+
                         }
 
-                    } 
+                    }
 
 
 
@@ -492,12 +520,7 @@ bot.onText("🤖TASKS🤖", async (msg) => {
     const mainMenuOptions = {
         reply_markup: {
             keyboard: [
-                ['👥REFER DAWGS👥', '💰DOGS BALANCE💰', '🧧WITHDRAW🧧', '🤖TASKS🤖'],
-            ],
-            inline_keyboard: [
-                [
-                    { text: '✅ DONE', callback_data: 'finishtask' },
-                ]
+                ['MAIN Menu🔝', '✅ FINISH TASK'],
             ],
             resize_keyboard: true,
             one_time_keyboard: false
@@ -505,7 +528,7 @@ bot.onText("🤖TASKS🤖", async (msg) => {
         , parse_mode: 'HTML'
     };
 
-    
+
     let stringer = "";
     if (data.length < 1) {
         bot.sendMessage(chatId, "Task section is a section for non-referrals to earn✅\n\n <i> Check back later‼️ Tasks would be updated as soon as there are active tasks✅</i> \nDo you want your ad published on this bot?\n\n Join the channel and stay tuned for advertising opportunities‼️*", mainMenuOptions)
@@ -523,6 +546,30 @@ bot.onText("🤖TASKS🤖", async (msg) => {
         });
         bot.sendMessage(chatId, `<i>Tasks available for you to earn $DOGS</i>\n\n${stringer}\n\nDo you want your ad published on this bot?\n\n Join the channel and stay tuned for advertising opportunities‼️*`, mainMenuOptions)
     }
+});
+
+
+bot.onText("MAIN Menu🔝", (msg) => {
+    const chatId = msg.chat.id;
+    const username = msg.from.username;
+    const mainMenuOptions = {
+        reply_markup: {
+            keyboard: [
+                ['👥REFER DAWGS👥', '💰DOGS BALANCE💰', '🧧WITHDRAW🧧', '🤖TASKS🤖'],
+            ],
+            resize_keyboard: true,
+            one_time_keyboard: false
+        }
+        , parse_mode: 'HTML'
+    };
+
+        bot.sendMessage(chatId, `Main menu 🔝`, mainMenuOptions)
+            .then(() => {
+                console.log('Message sent successfully');
+            })
+            .catch((error) => {
+                console.error('Error sending message:', error);
+            });
 });
 
 bot.onText("checkmainmenu", (msg) => {
