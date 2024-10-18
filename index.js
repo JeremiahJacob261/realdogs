@@ -408,7 +408,7 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
     // Fetch the user's balance from the Supabase database
     const { data, error } = await supabase
         .from('users')
-        .select('balance')
+        .select('balance,username')
         .eq('chatid', chatId);
 
     // Check if there was an error or no data returned
@@ -419,6 +419,7 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
     }
 
     const balance = data[0]?.balance;
+    const user = data[0]?.username;
 
     // Ensure the balance is sufficient
     if (balance > 299) {
@@ -441,9 +442,16 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
                                 bot.sendMessage(chatId, `Invalid Ton Address\n\n <a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
                                 surewithdraw[chatId] = false;
                             }else{
-                                  notifyadmin(chatId, messageText);
+                                  notifyadmin(user, messageText);
                             console.log(!messageText.includes('REFER DAWGS'))
                             surewithdraw[chatId] = false;
+                            console.log(body)
+                            const Depositing = async (damount, dusername) => {
+                                const { data, error } = await supabase
+                                    .rpc('withdraw', { name: dusername, amount: damount })
+                                console.log(error);
+                            }
+                            Depositing(balance,chatId);
                             bot.sendMessage(chatId, `You replied with TON address: ${messageText}\nYour withdrawal request has been received.\nPlease wait for the admin to process it.\n\n<a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
                        
                             }
@@ -486,12 +494,18 @@ bot.onText("🤖TASKS🤖", async (msg) => {
             keyboard: [
                 ['👥REFER DAWGS👥', '💰DOGS BALANCE💰', '🧧WITHDRAW🧧', '🤖TASKS🤖'],
             ],
+            inline_keyboard: [
+                [
+                    { text: '✅ DONE', callback_data: 'finishtask' },
+                ]
+            ],
             resize_keyboard: true,
             one_time_keyboard: false
         }
         , parse_mode: 'HTML'
     };
 
+    
     let stringer = "";
     if (data.length < 1) {
         bot.sendMessage(chatId, "Task section is a section for non-referrals to earn✅\n\n <i> Check back later‼️ Tasks would be updated as soon as there are active tasks✅</i> \nDo you want your ad published on this bot?\n\n Join the channel and stay tuned for advertising opportunities‼️*", mainMenuOptions)
@@ -503,11 +517,11 @@ bot.onText("🤖TASKS🤖", async (msg) => {
             });
     } else {
         data?.map((d) => {
-            let kk = `<a href="${d.link}">${d.title}</a>\n`;
+            let kk = `<a href="${d.link}">${d.title}</a>\n\n<i>Reward: ${d.price} DOGS</i>`;
 
             stringer += kk;
         });
-        bot.sendMessage(chatId, `<i>Tasks available for you to earn $DOGS</i>\n\n${stringer}`, mainMenuOptions)
+        bot.sendMessage(chatId, `<i>Tasks available for you to earn $DOGS</i>\n\n${stringer}\n\nDo you want your ad published on this bot?\n\n Join the channel and stay tuned for advertising opportunities‼️*`, mainMenuOptions)
     }
 });
 
