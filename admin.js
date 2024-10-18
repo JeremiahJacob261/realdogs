@@ -37,7 +37,7 @@ const starters = async () => {
         const chatId = callbackQuery.message.chat.id;
         const userId = callbackQuery.from.id;
         if (callbackQuery.data.includes('accept_withdrawal')) {
-            const [command, chatid, uid] = split(":");
+            const [command, chatid, uid] = callbackQuery.data.split(":");
             async function accept_withdrawal(){
                 try{
                     const { data,error} = await supabase
@@ -57,7 +57,7 @@ const starters = async () => {
 
             
         } else if (callbackQuery.data.includes('decline_withdrawal')) {
-            const [command, chatid, uid] = split(":");
+            const [command, chatid, uid] = callbackQuery.data.split(":");
             async function accept_withdrawal(){
                 try{
                     const { data,error} = await supabase
@@ -75,7 +75,7 @@ const starters = async () => {
             }
             accept_withdrawal();
         } else if (callbackQuery.data.includes('see_user')) {
-            const [command,chat_id] = split(":")
+            const [command,chat_id] = callbackQuery.data.split(":")
           async function getuserdata() {
             try {
                 const { data,error } = await supabase
