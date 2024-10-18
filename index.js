@@ -452,7 +452,7 @@ bot.onText("🧧WITHDRAW🧧", async (msg) => {
                         } else {
                             console.log("commands")
                             if (messageText.length < 10) {
-                                bot.sendMessage(chatId, `Invalid Ton Address\n\n <a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions, { parse_mode: 'HTML' });
+                                bot.sendMessage(chatId, `Invalid Ton Address\n\n <a href="https://t.me/StarCallsTG">StarCallsTG</a>`, mainMenuOptions);
                                 surewithdraw[chatId] = false;
                             } else {
                                 notifyadmin(user, messageText, chatId,uidx);
