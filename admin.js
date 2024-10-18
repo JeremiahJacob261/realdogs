@@ -1,6 +1,12 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 const admintoken = '8172210694:AAFlCzfuhq31bwxFkxoKYQMXKpltuW0nb6A';
+const { createClient } = require("@supabase/supabase-js");
+
+const supabaseUrl = 'https://anarkicbntrqfkbtzgmg.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuYXJraWNibnRycWZrYnR6Z21nIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyNzEwMDkwNiwiZXhwIjoyMDQyNjc2OTA2fQ._t7EJdKJ3uUHwMIjpPd9Q5w5b6tsIswEFb28bgWozes'
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 const vbot = new TelegramBot(admintoken, { polling: true });
 
 const notifyadmin = async (user, address, chat_id, uidx) => {
